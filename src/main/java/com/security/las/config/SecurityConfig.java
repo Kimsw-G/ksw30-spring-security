@@ -21,13 +21,15 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
+import com.security.las.service.PrincipalOauth2UserService;
+
 // import com.security.las.config.handler.MyLoginSuccessHandler;
 // import com.security.las.service.PrincipalOauth2UserService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    // @Autowired
-    // private PrincipalOauth2UserService principalOauth2UserService;
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
 
     private static final String[] AUTH_WHITELIST = {
         "/", "/login", "/logout", "/signup", "/home","/oauth2/authorization/google"
@@ -78,12 +80,12 @@ public class SecurityConfig {
                 // .passwordParameter("passwd")
                 // .successHandler(new MyLoginSuccessHandler())
                 // .failureHandler(null)
+            )
+            .oauth2Login(form->form
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService)
             );
-            // .oauth2Login(form->form
-            //     .loginPage("/login")
-            //     .userInfoEndpoint()
-            //     .userService(principalOauth2UserService)
-            // );
             // .logout(logout->logout
             //     .logoutUrl("/logout")
             //     .logoutSuccessUrl("/login")

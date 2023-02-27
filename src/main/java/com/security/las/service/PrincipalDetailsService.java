@@ -27,5 +27,4 @@ public class PrincipalDetailsService implements UserDetailsService{
         log.info(user);
         return new PrincipalDetails(user);
     }
-    
 }
