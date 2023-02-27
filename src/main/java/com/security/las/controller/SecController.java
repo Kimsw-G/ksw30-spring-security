@@ -2,6 +2,7 @@ package com.security.las.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.access.annotation.Secured;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,15 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.security.las.model.User;
+import com.security.las.repository.UserRepository;
 
 @Controller
 public class SecController {
 
-    // @Autowired
-	// private UserRepository userRepository;
+    @Autowired
+	private UserRepository userRepository;
 
-	// @Autowired
-	// private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping({ "", "/" })
 	public String index() {
@@ -27,21 +29,17 @@ public class SecController {
 
 	@GetMapping("/user")
 	public String user() {
-		
-
-		return "유저 페이지입니다.";
+		return "user";
 	}
 
 	@GetMapping("/admin")
 	public @ResponseBody String admin() {
-		return "어드민 페이지입니다.";
+		return "admin";
 	}
 	
-	//@PostAuthorize("hasRole('ROLE_MANAGER')")
-	//@PreAuthorize("hasRole('ROLE_MANAGER')")
 	@GetMapping("/manager")
 	public @ResponseBody String manager() {
-		return "매니저 페이지입니다.";
+		return "manager";
 	}
 
 	@GetMapping("/login")
@@ -54,14 +52,12 @@ public class SecController {
 		return "join";
 	}
 
-	@PostMapping("/joinProc")
+	@PostMapping("/join")
 	public String joinProc(User user) {
 		System.out.println("회원가입 진행 : " + user);
-		String rawPassword = user.getPassword();
-		// String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-		// user.setPassword(encPassword);
-		// user.setRole("ROLE_USER");
-		// userRepository.save(user);
-		return "redirect:/";
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRole("ROLE_USER");
+		userRepository.save(user);
+		return "redirect:/login";
 	}
 }
