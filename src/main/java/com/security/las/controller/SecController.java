@@ -1,9 +1,11 @@
 package com.security.las.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 // import org.springframework.security.access.annotation.Secured;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class SecController {
 
-    @Autowired
+	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
@@ -34,7 +36,8 @@ public class SecController {
 	}
 
 	@GetMapping("/user")
-	public String user() {
+	public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
 		return "user";
 	}
 
@@ -42,7 +45,7 @@ public class SecController {
 	public @ResponseBody String admin() {
 		return "admin";
 	}
-	
+
 	@GetMapping("/manager")
 	public @ResponseBody String manager() {
 		return "manager";
@@ -69,10 +72,29 @@ public class SecController {
 
 	@GetMapping("/test/login")
 	@ResponseBody
-	public String testLogin(Authentication authentication){
+	public String testLogin(Authentication authentication, 
+		@AuthenticationPrincipal PrincipalDetails userDetails){
 		log.info("/test/login");
 		var principalDetails = (PrincipalDetails) authentication.getPrincipal();
 		log.info(principalDetails);
+
+		log.info(userDetails.getUsername());
+		log.info(userDetails.getUser());
+		return "세션정보 확인";
+	}
+	@GetMapping("/test/oauth/login")
+	@ResponseBody
+	public String testOAuthLogin(Authentication authentication){
+		log.info("/test/oauth/login");
+		var oauth2User = (OAuth2User) authentication.getPrincipal();
+		log.info(oauth2User.getAttributes());
+
 		return "세션정보 확인";
 	}
 }
+
+// Spring Security는 Authentication이라는 자체적인 Session을 지님
+// 이때 일반 유저는 UserDetails를, OAuth유저는 OAuth2User를 Authentication에 제출하려고 함
+// 이를 위해 PrincipalDetails를 생성
+// PrincipalDetails에 UserDetails 및 OAuth2User를 상속
+// PrincipalDetails를 Authenticaion에 제출

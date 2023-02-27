@@ -2,11 +2,15 @@ package com.security.las.config;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.security.las.model.User;
+
+import lombok.Data;
 
 // /login 주소 요청을 낚아서 로그인을 진행
 // 로그인 진행 완료시 security session 생성 (Security ContextHolder)
@@ -14,7 +18,8 @@ import com.security.las.model.User;
 // User Object => UserDetails 타입 객체
 
 // Securiy Session => Authentication  => UserDetails
-public class PrincipalDetails implements UserDetails{
+@Data
+public class PrincipalDetails implements UserDetails, OAuth2User{
 
     private User user;
 
@@ -63,6 +68,18 @@ public class PrincipalDetails implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }
