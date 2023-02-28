@@ -1,4 +1,4 @@
-package com.security.las.config;
+package com.security.las.config.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;

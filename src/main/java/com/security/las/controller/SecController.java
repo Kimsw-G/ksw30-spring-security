@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.security.las.config.PrincipalDetails;
+import com.security.las.config.auth.PrincipalDetails;
 import com.security.las.model.User;
 import com.security.las.repository.UserRepository;
 

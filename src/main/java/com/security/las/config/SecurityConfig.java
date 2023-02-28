@@ -21,7 +21,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
-import com.security.las.service.PrincipalOauth2UserService;
+import com.security.las.config.auth.PrincipalOauth2UserService;
 
 // import com.security.las.config.handler.MyLoginSuccessHandler;
 // import com.security.las.service.PrincipalOauth2UserService;

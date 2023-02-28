@@ -1,4 +1,4 @@
-package com.security.las.service;
+package com.security.las.config.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.security.las.config.PrincipalDetails;
 import com.security.las.model.User;
 import com.security.las.repository.UserRepository;
 
