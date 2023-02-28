@@ -1,5 +1,6 @@
 package com.security.las.config.auth;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.security.las.config.auth.provider.FacebookUserInfo;
 import com.security.las.config.auth.provider.GoogleUserInfo;
+import com.security.las.config.auth.provider.NaverUserInfo;
 import com.security.las.config.auth.provider.OAuth2UserInfo;
 import com.security.las.model.User;
 import com.security.las.repository.UserRepository;
@@ -31,9 +33,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         log.info(userRequest);
         log.info(super.loadUser(userRequest));
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        log.info(oAuth2User.getAttributes());
-
-        
+        log.info("attibute : "+oAuth2User.getAttributes());
 
         OAuth2UserInfo oAuth2UserInfo = null;
         switch (userRequest.getClientRegistration().getRegistrationId()) {
@@ -44,7 +44,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
                 break;
             case "naver":
-
+                oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
                 break;
             default:
                 log.info("지원하지 않는 OAuth 입니다");
