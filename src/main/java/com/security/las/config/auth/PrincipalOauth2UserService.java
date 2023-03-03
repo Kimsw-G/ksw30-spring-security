@@ -30,6 +30,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        
         log.info(userRequest);
         log.info(super.loadUser(userRequest));
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -46,6 +47,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             case "naver":
                 oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
                 break;
+            case "kakao":
+                // oAuth2UserInfo = new 
             default:
                 log.info("지원하지 않는 OAuth 입니다");
                 break;
