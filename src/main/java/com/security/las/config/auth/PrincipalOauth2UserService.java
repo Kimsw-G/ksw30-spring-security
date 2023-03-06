@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.security.las.config.auth.provider.FacebookUserInfo;
 import com.security.las.config.auth.provider.GoogleUserInfo;
+import com.security.las.config.auth.provider.KakaoUserInfo;
 import com.security.las.config.auth.provider.NaverUserInfo;
 import com.security.las.config.auth.provider.OAuth2UserInfo;
 import com.security.las.model.User;
@@ -31,7 +32,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
-        log.info(userRequest);
+        log.info(userRequest.getClientRegistration().getRegistrationId());
         log.info(super.loadUser(userRequest));
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("attibute : "+oAuth2User.getAttributes());
@@ -48,7 +49,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
                 break;
             case "kakao":
-                // oAuth2UserInfo = new 
+                oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+                break;
             default:
                 log.info("지원하지 않는 OAuth 입니다");
                 break;
